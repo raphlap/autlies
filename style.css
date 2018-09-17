@@ -5,6 +5,8 @@ body{
 .tooltip {
     width:50px;
     position:absolute;
+    /*left:0px;
+    top:0px;*/
     display:none;
     z-index:1000;
     background-color:#CB5757;
