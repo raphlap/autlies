@@ -11,8 +11,9 @@ let cux = 0;
 let posx;
 let posy;
 let tooltip;
-let id;
+var id;
 let selected;
+let ellipses;
 function preload() {
     //data = loadJSON('~/data.bnf.fr/visu_auteurs_lies/auteursliesmusset.json')
 }
@@ -37,7 +38,7 @@ function setup() {
             cuy = 0;
             
             coord[k + count.toString()] = [];
-            coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[key]).indexOf(k), 'name': k, 'tx' : cux})
+            coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[key]).indexOf(k), 'name': k, 'tx' : cux, 'link': data[key][k]['auteurslies']})
             for (var i in diclet) {
                 cuy += diclet[i].length;;
                 if (diclet[i].includes(k)) {
@@ -47,23 +48,32 @@ function setup() {
         })
     }
 
+    tooltip = createDiv(); /*coord[el][0]['name']*/
+    tooltip.style('display', 'none');
+    tooltip.addClass('tooltip');
+    //tooltip.id(el);
+    tooltip.position(0, 0);
+
     for (var el in coord) {
         if (coord[el][1] !== undefined) {
-            id = el;
+            //id = el;
             posx = coord[el][0]['tx']/2+coord[el][0]['index']/2;
             posy = coord[el][1]['ty']/5+coord[el][1]['index']/5;
-            tooltip = createDiv('coucou !');
-            tooltip.style('display', 'none');
-            tooltip.addClass('tooltip');
-            tooltip.id(id);
-            tooltip.position(posx, posy);
+            // tooltip = createDiv(coord[el][0]['name']); /*coord[el][0]['name']*/
+            // tooltip.style('display', 'none');
+            // tooltip.addClass('tooltip');
+            // tooltip.id(el);
+            // tooltip.position(posx, posy);
             div = createDiv();
             div.size(5,5);
             div.style('border', '0.5px solid #000');
             div.style('border-radius', '5px / 5px');
             div.position(posx,posy);
             div.addClass('ellipse')
-            div.id(id);
+            div.id(el);
+            // link = createA (coord[el][0]['link']);
+            // link.parent(el);
+            // link.hide();
             
             //div.mouseOut(hidetooltip);
 
@@ -74,13 +84,30 @@ function setup() {
         //console.log(coord['Ã‰mile Faguet1565']);
         createCanvas(width, height);
         //var tooltip = selectAll('.tooltip');
-        var ellipses = selectAll('.ellipse');
+        ellipses = selectAll('.ellipse');
         //console.log(ellipses);
-        for (var i = 0; i<ellipses.length; i++){
+        for (let i = 0; i<ellipses.length; i++){
             //console.log(ellipses[i]['elt']);
-            selected = ellipses[i].mouseOver();
+            ellipses[i].mouseOver(function(){
+                console.log(ellipses[i]['elt'].style);
+                id = (ellipses[i]['elt'].id);
+                // let top = (ellipses[i]['elt'].style['top']);
+                // let left = (ellipses[i]['elt'].style['left']);
+                tooltip = select('.tooltip');
+                tooltip.html(coord[id][0]['name']);
+                tooltip.position(0, 0);
+                //tooltip.style('display', 'block');
+                tooltip.show();
+            });
+            ellipses[i].mouseOut(function(){
+                //console.log(i);
+                id = (ellipses[i]['elt'].id);
+                tooltip = select('#'+ id);
+                //tooltip.style('display', 'none');
+                tooltip.hide();
+            });
             // ellipses[i].mouseOut(hidetooltip);
-            //console.log(selected['elt'].id)
+            //id = selected['elt'].id;
         }
         
 }
@@ -123,8 +150,8 @@ function draw() {
 
 }
 
-function mouseOver() {
-    console.log(selected);
+function showtooltip() {
+    //console.log(id);
     //tooltip = select('#'+ id);
     
     //tooltip.style('display', 'block');
