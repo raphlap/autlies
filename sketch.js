@@ -39,44 +39,41 @@ function setup() {
         })
         //cux = 0;
         cux -= diclet[Object.keys(diclet)[0]].length;
-        for (var i in diclet) {
-            cux+= diclet[i-1].length;
-            letter = createDiv(i);
-            letter.position(cux/1.5, offsetx);
-            //     if (diclet[i].length = 0){
-            //         delete diclet[i];
-            // }
-            // console.log(diclet[i]);
-        }
+        // for (var i in diclet) {
+        //     cux+= diclet[i-1].length;
+        //     letter = createDiv(i);
+        //     letter.position(cux/1.5, offsetx);
+        // }
     for (var key = 0; key < Object.keys(data).length; key++) {
-    
+        
         cuy=0;
         Object.keys(data[Object.keys(data)[key]]).forEach(function(k){
             if (k == 0){
-                delete data[Object.keys(data)[key][k];
+                delete data[Object.keys(data)[key]][k];
             }
         });
-        cuyr += Object.keys(data[Object.keys(data)[key-1]).length;
-        role = createDiv(key);
-        role.position(offsety, cuyr);
-        Object.keys(data[Object.keys(data[Object.keys(data)[key]).forEach(function(k){
-            count += 1;
-            cux = 0;
-            //cuxe -= diclet[Object.keys(diclet)[0]].length;
+        console.log(data[Object.keys(data)[key]]);
+        // cuyr += Object.keys(data[Object.keys(data)[key-1]]).length;
+        // role = createDiv(Object.keys(data)[key]);
+        // role.position(offsety, cuyr);
+        // Object.keys(data[Object.keys(data[Object.keys(data)[key]]).forEach(function(k){
+        //     count += 1;
+        //     cux = 0;
+        //     //cuxe -= diclet[Object.keys(diclet)[0]].length;
             
-            coord[k + count.toString()] = [];
-            coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[Object.keys(data)[key]).indexOf(k), 'name': k, 'ty' : cuyr, 'link': data[Object.keys(data)[key][k]['auteurslies']})
-            for (var truc in diclet) { 
-                cux += diclet[truc].length;
-                //console.log(cuxe);
-                if (diclet[truc].includes(k)) {
-                coord[k + count.toString()].push({'letter' : truc, 'index' : diclet[truc].indexOf(k), 'name' : k, 'tx' : cux});
+        //     coord[k + count.toString()] = [];
+        //     coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[Object.keys(data)[key]]).indexOf(k), 'name': k, 'ty' : cuyr, 'link': data[Object.keys(data)[key]][k]['auteurslies']})
+        //     for (var truc in diclet) { 
+        //         cux += diclet[truc].length;
+        //         //console.log(cuxe);
+        //         if (diclet[truc].includes(k)) {
+        //         coord[k + count.toString()].push({'letter' : truc, 'index' : diclet[truc].indexOf(k), 'name' : k, 'tx' : cux});
                    
-            }
-            }
-        })
+        //     }
+        //     }
+        // })
         //console.log(coord);
-    }
+        }
 
     tooltip = createDiv();
     //tooltip.parent('#defaultCanvas0'); 
