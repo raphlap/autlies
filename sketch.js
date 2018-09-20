@@ -8,7 +8,7 @@ let width = 1110.50;
 let height = 5000;
 let cuy = 0;
 let cux = 0;
-let cuyr = 0;
+let cuyr = 20;
 let cuxe = 0;
 let posx;
 let posy;
@@ -17,6 +17,9 @@ var id;
 let ellipses;
 let offsetx = 5;
 let offsety = 5;
+let figspace = 10;
+let rolespace = 200;
+const colors = ['1f77b4', 'ff7f0e','2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf'];
 function preload() {
     //data = loadJSON('~/data.bnf.fr/visu_auteurs_lies/auteursliesmusset.json')
 }
@@ -28,7 +31,15 @@ function setup() {
     cuyr -= Object.keys(data[Object.keys(data)[0]]).length;
     console.log(Object.keys(data['Auteur du texte']).length);
     letters.forEach(function(l){
+        cux+=(width-rolespace)/27;
+        letter = createDiv(l);
+        //letter.style('position', 'fixed');
+        letter.style('left', cux+rolespace+'px');
+        letter.style('top', offsetx+'px');
+        letter.addClass('letter');
+        //letter.parent('#letterdiv');
         diclet[l] = [];
+ 
     for (var key in data) {
             Object.keys(data[key]).forEach(function(k){
                 if (l == k.charAt(0)){
@@ -37,13 +48,7 @@ function setup() {
             })
         }  
         })
-        //cux = 0;
-        cux -= diclet[Object.keys(diclet)[0]].length;
-        // for (var i in diclet) {
-        //     cux+= diclet[i-1].length;
-        //     letter = createDiv(i);
-        //     letter.position(cux/1.5, offsetx);
-        // }
+    
     for (var key = 0; key < Object.keys(data).length; key++) {
         
         cuy=0;
@@ -52,26 +57,46 @@ function setup() {
                 delete data[Object.keys(data)[key]][k];
             }
         });
-        console.log(data[Object.keys(data)[key]]);
-        // cuyr += Object.keys(data[Object.keys(data)[key-1]]).length;
-        // role = createDiv(Object.keys(data)[key]);
-        // role.position(offsety, cuyr);
-        // Object.keys(data[Object.keys(data[Object.keys(data)[key]]).forEach(function(k){
-        //     count += 1;
-        //     cux = 0;
-        //     //cuxe -= diclet[Object.keys(diclet)[0]].length;
-            
-        //     coord[k + count.toString()] = [];
-        //     coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[Object.keys(data)[key]]).indexOf(k), 'name': k, 'ty' : cuyr, 'link': data[Object.keys(data)[key]][k]['auteurslies']})
-        //     for (var truc in diclet) { 
-        //         cux += diclet[truc].length;
-        //         //console.log(cuxe);
-        //         if (diclet[truc].includes(k)) {
-        //         coord[k + count.toString()].push({'letter' : truc, 'index' : diclet[truc].indexOf(k), 'name' : k, 'tx' : cux});
+        if (data[Object.keys(data)[key-1]] !== undefined) {
+            //console.log(data[Object.keys(data)[key-1]]);
+            cuyr += Object.keys(data[Object.keys(data)[key-1]]).length * figspace;
+        }
+        
+        if (key > 10){
+            colr = Number(key.toString()[1]);
+        } else {
+            colr = key;
+        }
+        role = createDiv(Object.keys(data)[key]);
+        //role.position(offsety, cuyr);
+        role.style('left', offsety+'px');
+        role.style('top', cuyr+'px');
+        //role.style('position', 'sticky');
+        role.addClass('role');
+        role.style('font-size', '15px')
+        role.style('color', '#'+ colors[colr]);
+        //role.scrollIntoView();
+        Object.keys(data[Object.keys(data)[key]]).forEach(function(k){
+            count += 1;
+            cux = rolespace;
+            //cuxe -= diclet[Object.keys(diclet)[0]].length;
+            if (key > 10){
+                colr = Number(key.toString()[1]);
+            } else {
+                colr = key;
+            }
+            coord[k + count.toString()] = [];
+            coord[k + count.toString()].push({'role' : key, 'index' : Object.keys(data[Object.keys(data)[key]]).indexOf(k), 'name': k, 'ty' : cuyr, 'link': data[Object.keys(data)[key]][k]['auteurslies'], 'col' : colors[colr]})
+            for (var truc in diclet) { 
+                //cux += diclet[truc].length;
+                cux += (width-rolespace)/27;
+                //console.log(cuxe);
+                if (diclet[truc].includes(k)) {
+                coord[k + count.toString()].push({'letter' : truc, 'index' : diclet[truc].indexOf(k), 'name' : k, 'tx' : cux});
                    
-        //     }
-        //     }
-        // })
+            }
+            }
+        })
         //console.log(coord);
         }
 
@@ -84,17 +109,22 @@ function setup() {
     for (var el in coord) {
         if (coord[el][1] !== undefined) {
             //id = el;
-            posy = coord[el][0]['ty']+(coord[el][0]['index']+5);
-            posx = coord[el][1]['tx']/1.5+(coord[el][1]['index']+5);
+            posy = coord[el][0]['ty']+(coord[el][0]['index'] * figspace);
+            posx = coord[el][1]['tx'];
+            //posx = coord[el][1]['tx']/1.5+(coord[el][1]['index']+5);
 
-            div = createA(coord[el][0]['link'], '');
+            //div = createA(coord[el][0]['link'], '');
+            div = createDiv();
             //div.parent('#defaultCanvas0');
-            div.size(5,5);
-            div.style('border', '0.5px solid #000');
+            div.size(15,10);
+            //div.style('border', '0.5px solid #000');
             div.style('border-radius', '5px / 5px');
+            div.style('background-color', '#' + coord[el][0]['col']);
             div.position(posx,posy);
             div.addClass('ellipse')
             div.id(el);
+            
+            //console.log('#' + coord[el][0]['col'])
         }else{
             //delete coord[el];
         }
@@ -119,7 +149,31 @@ function setup() {
                 tooltip.hide();
             });
         }
-        
+        // var letterscroll = selectAll('.letter');
+        // console.log(letterscroll)
+        // for (let e = 0; e <letterscroll;e++){
+        //     letterscroll[e].scrollIntoView();
+        //     // function scrollToTop() {
+        //     //     letterscroll[e].scrollIntoView(true);
+        //     // }
+        //     // function scrollToBottom() {
+        //     //     letterscroll[e].scrollIntoView(false);
+        //     // }
+        // }
+//scroll
+// window.onscroll = function()  {myFunction()};
+// var lettscroll = document.getElementById("letterdiv");
+// //console.log(lettscroll)
+// var sticky = lettscroll.offsetTop;
+
+// function myFunction(){
+//     if (window.pageYOffset > sticky) {
+//         lettscroll.classList.add('sticky');
+//         lettscroll.style('top', )
+//     }else{
+//         lettscroll.classList.remove('sticky');
+//     }
+// }
 }
 
 function draw() {
