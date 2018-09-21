@@ -16,6 +16,9 @@ body{
     box-shadow: 0px 3px 2px #8D8D8D;
     border-radius: 6px;
 }
+/* .rolediv{
+    border: 1px solid #AB4141;
+} */
 .close{
   right: 15px;
   position: absolute;
@@ -45,6 +48,9 @@ body{
 }
 
  .role{
-    position:sticky;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -o-sticky;
+    position: sticky;
     top: 0;
 } 

@@ -19,6 +19,7 @@ let offsetx = 5;
 let offsety = 5;
 let figspace = 10;
 let rolespace = 200;
+let heightrole = 0;
 const colors = ['1f77b4', 'ff7f0e','2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf'];
 function preload() {
     //data = loadJSON('~/data.bnf.fr/visu_auteurs_lies/auteursliesmusset.json')
@@ -60,6 +61,9 @@ function setup() {
         if (data[Object.keys(data)[key-1]] !== undefined) {
             //console.log(data[Object.keys(data)[key-1]]);
             cuyr += Object.keys(data[Object.keys(data)[key-1]]).length * figspace;
+            heightrole = ((Object.keys(data[Object.keys(data)[key]]).length * figspace) - (Object.keys(data[Object.keys(data)[key-1]]).length * figspace));
+        }else{
+            heightrole = ((Object.keys(data[Object.keys(data)[key+1]]).length * figspace) - (Object.keys(data[Object.keys(data)[key]]).length * figspace));
         }
         
         if (key > 10){
@@ -67,14 +71,28 @@ function setup() {
         } else {
             colr = key;
         }
-        role = createDiv(Object.keys(data)[key]);
-        //role.position(offsety, cuyr);
-        role.style('left', offsety+'px');
-        role.style('top', cuyr+'px');
+        //role = createDiv(Object.keys(data)[key]);
+        
+        
+        role = createDiv();
+        role.position(offsety, cuyr);
+        role.style('width', rolespace.toString()+'px');
+        role.style('height',heightrole.toString()+ 'px');
+        // role.style('left', offsety.toString()+'px');
+        // role.style('top', cuyr.toString()+'px');
         //role.style('position', 'sticky');
-        role.addClass('role');
+        role.addClass('rolediv');
+        role.id(Object.keys(data)[key]);
         role.style('font-size', '15px')
-        role.style('color', '#'+ colors[colr]);
+        
+        textrole = createP(Object.keys(data)[key]);
+        //textrole.position(offsety, cuyr);
+        // textrole.style('left', offsety.toString()+'px');
+        // textrole.style('top', cuyr.toString()+'px');
+        //textrole.id(Object.keys(data)[key])
+        textrole.style('color', '#'+ colors[colr]);
+        textrole.parent('#'+Object.keys(data)[key]);
+        textrole.addClass('role');
         //role.scrollIntoView();
         Object.keys(data[Object.keys(data)[key]]).forEach(function(k){
             count += 1;
@@ -114,13 +132,14 @@ function setup() {
             //posx = coord[el][1]['tx']/1.5+(coord[el][1]['index']+5);
 
             //div = createA(coord[el][0]['link'], '');
-            div = createDiv();
+            div = createDiv(coord[el][0]['name']);
+            div.style('font-size', '10pt')
             //div.parent('#defaultCanvas0');
-            div.size(15,10);
+            //div.size(15,10);
             //div.style('border', '0.5px solid #000');
-            div.style('border-radius', '5px / 5px');
-            div.style('background-color', '#' + coord[el][0]['col']);
-            div.position(posx,posy);
+            //div.style('border-radius', '5px / 5px');
+            div.style('color', '#' + coord[el][0]['col']);
+            div.position(posx,posy+offsety);
             div.addClass('ellipse')
             div.id(el);
             
@@ -149,67 +168,9 @@ function setup() {
                 tooltip.hide();
             });
         }
-        // var letterscroll = selectAll('.letter');
-        // console.log(letterscroll)
-        // for (let e = 0; e <letterscroll;e++){
-        //     letterscroll[e].scrollIntoView();
-        //     // function scrollToTop() {
-        //     //     letterscroll[e].scrollIntoView(true);
-        //     // }
-        //     // function scrollToBottom() {
-        //     //     letterscroll[e].scrollIntoView(false);
-        //     // }
-        // }
-//scroll
-// window.onscroll = function()  {myFunction()};
-// var lettscroll = document.getElementById("letterdiv");
-// //console.log(lettscroll)
-// var sticky = lettscroll.offsetTop;
-
-// function myFunction(){
-//     if (window.pageYOffset > sticky) {
-//         lettscroll.classList.add('sticky');
-//         lettscroll.style('top', )
-//     }else{
-//         lettscroll.classList.remove('sticky');
-//     }
-// }
 }
 
 function draw() {
-//     push();
-//     for (var l in diclet) {
-//         var long = diclet[l].length;
-//         push();
-//         translate(0, 10);
-//         pop();
-//         translate(long,0 );
-//         //push();
-//         //rotate(QUARTER_PI);
-//         //textSize(10);
-//         text(l, 0, 0)
-//         //line(0, 0, long,0 )
-//         //pop();
-//     }
-    
-//     for (var r in data) {
-//         var lont = Object.keys(data[r]).length;
-//         translate(0, lont/1.5);
-//         text(r, 0, 0);
-//         line(0, 0, lont/2, 0);
-//     }
-//     pop();
-    
-    // for (var el in coord) {
-    //     //console.log(el)
-    //     //
-    //     // if (coord[el][1] !== undefined) {
-    //     // posx = coord[el][0]['tx']/2+coord[el][0]['index']/2;
-    //     // posy = coord[el][1]['ty']/5+coord[el][1]['index']/5;
- 
 
-    //      //}
-         
-    // }
 
 }
